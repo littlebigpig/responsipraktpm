@@ -49,8 +49,9 @@ class _DetailScreenState extends State<DetailScreen> {
         Image.network(_detailData!['images'] [0] ?? 'https:/placehold.co/600x400'),
         Text("Name : ${_detailData!['name']}"),
         Text("Kekkei Genkai :  ${_detailData!['personal'] ["kekkaiGenkai"] ?? 'Empty'}"),
-        Text("Titles : ${_detailData!['personal'] ['titles']}"),
-        Text("Family : ${_detailData!['family']}")
+        Text("Titles : ${_detailData!['personal'] ['titles'] ?? 'Empty'}"),
+        Text("Family : ${_detailData!['family'] ?? 'Empty'}"),
+        Text("Appears In : ${_detailData!['debut'] ['appearsIn']}")
       ],
     ) 
     : Text("No Data")
