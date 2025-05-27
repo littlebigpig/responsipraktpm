@@ -1,56 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:tugas3prak/models/anime_model.dart';
-import 'package:tugas3prak/presenter/anime_presenter.dart';
-import 'package:tugas3prak/views/anime_detail.dart';
+import 'package:tugas3prak/models/movie_model.dart';
+import 'package:tugas3prak/presenter/movie_presenter.dart';
+import 'package:tugas3prak/views/movie_detail.dart';
 
-class AnimeListScreen extends StatefulWidget {
-  const AnimeListScreen({super.key});
+class MovieListScreen extends StatefulWidget {
+  const MovieListScreen({super.key});
 
   @override
-  State<AnimeListScreen> createState() => _AnimeListScreenState();
+  State<MovieListScreen> createState() => _MovieListScreenState();
 }
 
-class _AnimeListScreenState extends State<AnimeListScreen> 
-implements AnimeView{
-  late AnimePresenter _presenter;
+class _MovieListScreenState extends State<MovieListScreen>
+    implements MovieView {
+  late MoviePresenter _presenter;
   bool _isLoading = false;
-  List<Anime> _animeList = [];
+  List<Movie> _movieList = [];
   String? _errorMessage;
-  String _currentEndpoint = 'akatsuki';
+  final String _currentEndpoint = 'movie';
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    _presenter = AnimePresenter(this);
-    _presenter.loadAnimeData(_currentEndpoint);
+    _presenter = MoviePresenter(this);
+    _presenter.loadMovieData(_currentEndpoint);
   }
 
-  void _fetchData(String endpoint) {
-    setState(() {
-      _currentEndpoint = endpoint;
-      _presenter.loadAnimeData(endpoint);
-    });
-  }
-  
+  //void _fetchData(String endpoint) {
+  //  setState(() {
+  //    _currentEndpoint = endpoint;
+  //    _presenter.loadMovieData(endpoint);
+  //  });
+  //}
+
   @override
   void hideLoading() {
     setState(() {
       _isLoading = false;
     });
   }
-  
+
   @override
-  void showAnimeList(List<Anime> animeList) {
-    _animeList = animeList;
+  void showMovieList(List<Movie> movieList) {
+    setState(() {
+      _movieList = movieList;
+    });
   }
-  
+
   @override
   void showError(String message) {
     setState(() {
       _errorMessage = message;
     });
   }
-  
+
   @override
   void showLoading() {
     setState(() {
@@ -61,45 +63,48 @@ implements AnimeView{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Anime List"),
-      ),
-      body:Column(
+      appBar: AppBar(title: Text("Movie List")),
+      body: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(onPressed: () => _fetchData('characters'), child: Text("Characters")),
-              SizedBox(width: 10,),
-              ElevatedButton(onPressed: () => _fetchData('akatsuki'), child: Text("Akatsuki")),
-              SizedBox(width: 10,),
-              ElevatedButton(onPressed: () => _fetchData('kara'), child: Text("Kara"))
-            ]
+            //children: [
+            //  ElevatedButton(onPressed: () => _fetchData('characters'), child: Text("Characters")),
+            //   SizedBox(width: 10,),
+            //  ElevatedButton(onPressed: () => _fetchData('akatsuki'), child: Text("Akatsuki")),
+            //   SizedBox(width: 10,),
+            //   ElevatedButton(onPressed: () => _fetchData('kara'), child: Text("Kara"))
+            // ]
           ),
 
-          Expanded(child: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : _errorMessage != null
-          ? Center(child: Text("Error ${_errorMessage}"))
-          : ListView.builder(
-            itemCount: _animeList.length,
-            itemBuilder: (context, index){
-              final anime = _animeList [index];
-              return ListTile(
-                leading: anime.imageUrl.isNotEmpty
-                ? Image.network(anime.imageUrl)
-                : Image.network('https:/placehold.co/600x400'),
-                title: Text(anime.name),
-                subtitle: Text(anime.familyCreator),
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> DetailScreen(id: anime.id, endpoint: _currentEndpoint)));
-                }
-              );
-            }
-          )
-          )
+          Expanded(
+            child:
+                _isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : _errorMessage != null
+                    ? Center(child: Text("Error ${_errorMessage}"))
+                    : ListView.builder(
+                      itemCount: _movieList.length,
+                      itemBuilder: (context, index) {
+                        final movie = _movieList[index];
+                        return ListTile(
+                          leading:
+                              movie.imgUrl.isNotEmpty
+                                  ? Image.network(movie.imgUrl)
+                                  : Image.network(
+                                    'https:/placehold.co/600x400',
+                                  ),
+                          title: Text(movie.title),
+                          subtitle: Text(movie.rating),
+                          onTap: () {
+                            // Navigator.push(context, MaterialPageRoute(builder: (context)=> DetailScreen(id: "movie.id", endpoint: _currentEndpoint)));
+                          },
+                        );
+                      },
+                    ),
+          ),
         ],
-      )
+      ),
     );
   }
 }

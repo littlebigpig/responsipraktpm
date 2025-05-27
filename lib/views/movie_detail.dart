@@ -23,7 +23,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Future<void> _fetchDetailData() async{
     try {
-      final data = await BaseNetwork.getDetailData(widget.endpoint, widget.id);
+      final data = await BaseNetwork.getDetailData(widget.endpoint, widget.id as String);
       setState(() {
         _detailData = data;
         _isLoading = false;
@@ -42,7 +42,7 @@ class _DetailScreenState extends State<DetailScreen> {
     body: _isLoading
     ? Center(child: CircularProgressIndicator())
     : _errorMessage != null
-    ? Center(child: Text("Error ${_errorMessage}"))
+    ? Center(child: Text("Errorp ${_errorMessage}"))
     :_detailData != null
     ?Column(
       children: [
