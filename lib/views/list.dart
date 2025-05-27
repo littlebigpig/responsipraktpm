@@ -16,7 +16,7 @@ class _MovieListScreenState extends State<MovieListScreen>
   bool _isLoading = false;
   List<Movie> _movieList = [];
   String? _errorMessage;
-  final String _currentEndpoint = 'movie';
+  final String _currentEndpoint = "movie";
 
   @override
   void initState() {
@@ -95,9 +95,11 @@ class _MovieListScreenState extends State<MovieListScreen>
                                     'https:/placehold.co/600x400',
                                   ),
                           title: Text(movie.title),
-                          subtitle: Text(movie.rating),
+                          subtitle: Text("Rating: ${movie.rating}  | Genre: ${movie.genre.join(', ')} | Durasi: ${movie.duration}"),
                           onTap: () {
-                            // Navigator.push(context, MaterialPageRoute(builder: (context)=> DetailScreen(id: "movie.id", endpoint: _currentEndpoint)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> DetailScreen(
+                                        id: movie.id,
+                                        endpoint: _currentEndpoint,)));
                           },
                         );
                       },

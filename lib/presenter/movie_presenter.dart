@@ -14,6 +14,7 @@ class MoviePresenter {
 
   Future<void>loadMovieData(String endpoint) async{
     try {
+      view.showLoading();
       final List<dynamic> data = await BaseNetwork.getData(endpoint);
       final movieList = data.map((json)=> Movie.fromJson(json)).toList();
       view.showMovieList(movieList);
